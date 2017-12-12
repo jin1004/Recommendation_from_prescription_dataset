@@ -15,25 +15,17 @@ from sklearn import preprocessing
 from pandas.tools.plotting import scatter_matrix
 import matplotlib.pyplot as plt
 from sklearn.feature_selection import RFE
-from sklearn.linear_model import LogisticRegression
 from sklearn import model_selection
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.svm import SVC
+
 
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
-
-
-# In[41]:
+from sklearn.externals import joblib
 
 
 #load the json file
@@ -48,9 +40,6 @@ data=json_normalize(data_json)
 #data_flattened = (flatten(d) for d in data_json)
 #load the flattened json to panda's dataframe
 #data_normalized = pd.DataFrame(data_flattened)
-
-
-# In[42]:
 
 
 #Creates a separate row for each element in lists inside medicines 
@@ -69,14 +58,6 @@ data3.symptoms.loc[data3.symptoms.isnull()] = data3.symptoms.loc[data3.symptoms.
 data3[['symptoms_0','symptoms_1','symptoms_2', 'symptoms_3', 'symptoms_4', 'symptoms_5', 'symptoms_6', 'symptoms_7', 'symptoms_8', 'symptoms_9', 'symptoms_10']] = pd.DataFrame(data3.symptoms.values.tolist(), index= data3.index)
 data_normalized=data3.drop('symptoms',axis=1)
 
-
-# In[43]:
-
-
-data4
-
-
-# In[44]:
 
 
 #separate the numeric and categorical data
@@ -133,55 +114,19 @@ data_target = enc.transform(data_medicines_target2).toarray()
 data_main=np.column_stack((data_numeric,input_onehotlabels))
 
 
-# In[45]:
-
-
-data_main.shape
-
-
-# In[14]:
-
-
-df=pd.get_dummies( d, columns = cols_to_transform )
-df.iloc[48]
-
-
-# In[46]:
-
-
 #split the file into training and test data. 10% of the training data is used as test data
 train_input, test_input, train_target, test_target = train_test_split(data_main, data_target, test_size=0.1, random_state=50)
 
 
-# In[ ]:
-
-
-# Spot Check Algorithms
-#train with
+#train a classifier
 model=RandomForestClassifier()
 #Get the best parameters for the model training using 10 fold cross validation
 kfold = model_selection.KFold(n_splits=10, random_state=10)
 cv_results = model_selection.cross_val_score(model, train_input, train_target, cv=kfold, scoring='accuracy')
 model.fit(train_input,train_target)
+
 # save the model to disk
-filename = 'model.sav'
-pickle.dump(model, open(filename, 'wb'))
+joblib.dump(model, 'model.sav')
 
 
-# In[162]:
-
-
-cv_results
-
-data_numeric.shape
-# In[203]:
-
-
-data_categorical.shape
-
-
-# In[204]:
-
-
-data.shape
 
