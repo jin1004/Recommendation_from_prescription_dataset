@@ -18,7 +18,7 @@ As can be seen from the  figure above, the dataset consists of 3966 samples with
 The dataset is divided into 2 parts: data_input (all the categories except the medicines) and data_target (medicines column).
 ![Alt text](https://github.com/jin1004/Recommendation_project/blob/master/extras/images/input_target.jpg)
 
-Data Cleaning
+## Data Cleaning
 
 There are 2 primary data types in the dataset: numeric and categorical data (data with text). Screenshots of numeric and categorical datasets from the input dataset is given below:
 ![Alt text](https://github.com/jin1004/Recommendation_project/blob/master/extras/images/data_numeric.png)
@@ -28,7 +28,7 @@ The numeric dataset is cleaned by replacing *null* object with 0.
 
 In the categorical dataset including the target dataset (medicines), the missing values seem to be represented by empty arrays, *null* objects and *none* string. In order to clean the dataset, I replace the empty objects with *null* objects and then reolace the *null* objects by *None* to make the dataset uniform. We haven't used other approaches such as replacing with the mean or dropping rows/columns with empty objects mainly because the dataset is very small. The cases of all the text in all the columns are converted to lowercase for further text processing.
 
-Data Processing
+## Data Processing
 
 Majority of machine learning algorithms can only work with numeric data, so I wanted to find the best way to represent the entire dataset numerically.
 
