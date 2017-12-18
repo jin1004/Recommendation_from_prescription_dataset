@@ -78,11 +78,11 @@ Also, logistic regression, like most of the other ML algorithms, only works with
  >
  >
  > Firstly, I am training in my laptop so I can't do anything that needs to run for more than a few hours or takes up too much resources. 
-
+ >
  > So I haven't been able to use cross validation, which is a method often used to find the ideal parameters for a model by dividing the training set into training and validation sets and finding the model that gives the best overall accuracy on the different validation sets. This also reduces the risk of overfitting.
-
+ >
  > Also, the features used should have ideally been transformed using something like PCA  (Principal Component Analysis), which basically reduces the dimension of the feature set using the dependencies between the feature, which I think would have been ideal in this case. But I did not get the time to do that.
-
+ >
  >  Also, in this case, I am assuming the different labels are independent of each other, which is not the case in reality, because in this case, some medicines are always more likely to be prescribed together. So I think some other approach may be more ideal like LabelPowerset, but I didn't do that yet.
 
 ## Evaluation
