@@ -28,6 +28,9 @@ The numeric dataset is cleaned by replacing *null* object with 0.
 
 In the categorical dataset including the target dataset (medicines), the missing values seem to be represented by empty arrays, *null* objects and *none* string. In order to clean the dataset, I replaced the empty objects with *null* objects and then replaced the *null* objects by *None* to make the dataset uniform. We haven't used other approaches such as replacing with the mean or dropping rows/columns with empty objects mainly because the dataset is very small. The cases of all the text in all the columns are converted to lowercase as well, for uniformity.
 
+> **Potential Issues**
+> It's not a very good idea to replace missing values with 0 or null, but I need to do more analysis on the relationship between each of these different features and their relationships with the medicine and figure out the best approach.
+
 ## Data Processing
 
 Majority of machine learning algorithms can only work with numeric data, so I wanted to find the best way to represent the entire dataset numerically.
@@ -51,7 +54,7 @@ Some screenshots for the **diagnoses** column is also given below:
 ![Alt text](https://github.com/jin1004/Recommendation_project/blob/master/extras/images/data_diagnoses.png)
 ![Alt text](https://github.com/jin1004/Recommendation_project/blob/master/extras/images/data_diagnoses_final.png)
 
-> **Potential Issues with this approach for symptoms and diagnoses**
+> **Potential Issues**
 > In this case, we are assuming certain symptoms and diagnoses are always represented using the same phrases, which is not the case in reality. Ideally a word2vec model that can put all the similarly worded symptoms or diagnoses in the same group will work better. However, I will need a bigger dataset and machine with more resources in order to model something like that. There may be other approaches that I have not thought of yet to represent this kind of data, but I need to do more research.
 
 After procesing all the text data, all the arrays obtained are concatenated:
@@ -73,7 +76,7 @@ It is often hard to tell right away which algorithm will work best with a given 
 1) We need a probability of all the labels instead of getting a few labels as an output because certain labels may already be given while testing so we need to output the medicine with the highest probability that is not already provided.
 2) It seemed to take less memory and time. A few other classifiers that I tried earlier was taking too long or making my laptop unusable because it was using up too much memory.
 
-Also, logistic regression, like most of the other ML algorithms, only works with single labels. So, in order to use a logistic regression model, we first need to turn it into a single label classification problem. So we used the **Binary Relevance** approach, which basically each label as a separate single class classification problem. So each label with the same set of features is treated as a separate sample.
+Also, logistic regression, like most of the other ML algorithms, only works with single labels. So, in order to use a logistic regression model, we first need to turn it into a single label classification problem. So I tried two different approaches in order to transform the multilabel classification problem. One is the **Binary Relevance** approach, which trains a separate classifier for each label in a sample. This approach assumes each label present in a sample is independent of each other, which may not be ideal for this case, because some medicines are always more likely to be prescribed together than the others. So I tried the **Label Powerset** approach as well, which train a separate classifier for every label combination found in the training set.
 
  > Limitations and Possible Improvements
  >
@@ -83,12 +86,17 @@ Also, logistic regression, like most of the other ML algorithms, only works with
  > So I haven't been able to use cross validation, which is a method often used to find the ideal parameters for a model by dividing the training set into training and validation sets and finding the model that gives the best overall accuracy on the different validation sets. This also reduces the risk of overfitting.
  >
  > Also, the features used should have ideally been transformed using something like PCA  (Principal Component Analysis), which basically reduces the dimension of the feature set using the dependencies between the feature, which I think would have been ideal in this case. But I did not get the time to do that.
- >
- > Also, in this case, I am assuming the different labels are independent of each other, which, in this case, is not true, because some medicines are always more likely to be prescribed together. So I think some other multilabel transformation approach may be more ideal like LabelPowerset, but I didn't get time to do that yet.
+ 
 
 ## Evaluation
 I evaluated the model using precision, recall and F-score, which seem like the most appropriate measures for this case. Precision score measures the percentage of correct prescribed medicines among the medicine labels selected by the algorithm. Recall score measures the percentage of correct medicine labels selected by the algorithm. F-measure is a combined precision and recall measure. The scores are shown below:
 
-![Alt text](https://github.com/jin1004/Recommendation_project/blob/master/extras/images/eval_scores.png)
+Evaluation Scores from using **Binary Relevance** to transform the multilabel classifier:
 
-Obviously the scores are all around 33%, which is not good. Implementing the other approaches discussed earlier probably will increase the accuracy by some margin. However, it's probably not going to improve too much without a much larger dataset.
+![Alt text](https://github.com/jin1004/Recommendation_project/blob/master/extras/images/eval_model1.png)
+
+Evaluation Scores from using **Label Powerset** to transform the multilabel classifier:
+
+![Alt text](https://github.com/jin1004/Recommendation_project/blob/master/extras/images/eval_model2.png)
+
+Obiously the scores overall are still pretty low. Implementing the other approaches discussed earlier probably will increase the accuracy by some margin. However, it's probably not going to improve too much without a much larger dataset.
