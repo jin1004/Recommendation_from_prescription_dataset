@@ -53,7 +53,7 @@ print ("Sex (Male/Female): ")
 while True:
     sex=input()
     sex=sex.lower()
-    if ((sex=='Male') or (sex=='Female')):
+    if ((sex=='male') or (sex=='female')):
         break
     else:
         print ("Please enter 'Male' or 'Female' ")
@@ -148,7 +148,10 @@ predicted_data=predicted_data.toarray()
 # using 0 for all the additional labels during training has caused the predictor to also output 0's after the predicted labels.
 # The issue is: 0 is also a label number for a particular medicine
 # 
-# Temporary workaround: I am cutting all the 0's in the end. As long as this particular medicine is not the last recommended medicine by the system, everything should be fine, and since this particular medicine encoded as 0 only appears twice during training, it's highly unlikely for it to be the final recommended medicine in any given scenario. 
+# Temporary workaround: I am cutting all the 0's in the end. 
+# As long as this particular medicine is not the last recommended medicine by the system, everything should be fine,
+# and since this medicine encoded as 0 only appears twice during training, 
+# it's highly unlikely for it to be the final recommended medicine in any given scenario. 
 
 ind=np.argmax(predicted_data==0)
 predicted_data=predicted_data[0][0:ind-1]
@@ -170,5 +173,5 @@ for i in range(len(predicted_data)):
         break
 print ("\n")
 print ("Recommended Medicine:")
-print(output)
-
+output_final=output.title()
+print(output_final)

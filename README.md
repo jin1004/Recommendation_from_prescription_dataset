@@ -2,8 +2,28 @@
 This repository contains the codes and description of the medicine recommendation system (Jeeon).
 
 ## Objective
-The goal is to create a recommendation algorithm that, given an unfinished prescription (that has some data already), can suggest the next best medicine to prescribe.
+The goal is to create a recommendation applicaiton that, given an unfinished prescription (that has some data already), can suggest the next best medicine to prescribe.
 
+
+## How to run
+
+* Install Docker (https://docs.docker.com/engine/installation)
+
+I have uploaded the image to docker hub. So in order to run it, just follow these steps:
+* Pull the image from Docker Hub (image size is ~1.34GB)  It may take ~10-15 minutes:
+`docker pull naziba/medicine_recommendation`
+* Run the application and follow the instructions on screen:
+`docker run -ti naziba/medicine_recommendation`
+
+ Alternatively, you can also build your image:
+ * First clone the git repository to a local directory
+ * Download the model from https://www.dropbox.com/s/xe2994bu9g96b7d/model1.out?dl=0 and put it in the same directory
+ * cd to the local directory
+ * Run the following commands:
+ `docker build -t medicine-recommendation .`
+ `docker run -ti medicine-recommendation`
+
+#Algorithm Description
 A dataset is provided for the task, which I am using to train a supervised machine learning classifier that uses the different medicines as different classes and predicts which class a particular data will belong to given all the other values in the prescription.
 
 ## Dataset Description
@@ -87,9 +107,20 @@ Also, logistic regression, like most of the other ML algorithms, only works with
  >
  > Also, the features used should have ideally been transformed using something like PCA  (Principal Component Analysis), which basically reduces the dimension of the feature set using the dependencies between the feature, which I think would have been ideal in this case. But I did not get the time to do that.
  
+## Prediction Output
+
+The model can predict the most likely set of labels given an unfinished prescription. Since the input prescription may contain a few medicines as well, the final output is one of the predicted medicines that was not provided as an input.
+
+> Small bug that should be fixed when it's trained next time:
+>
+> Since number of medicines provided is always different in the dataset, I paddeed the additional trailing fields with 0s. I realized while testing that one of the medicine labels is also encoded as 0.
+> 
+> Temporary Workaround:
+>
+> I am just not taking into account the trailing 0's during recommendation. This will not be a problem as long as the particular medicine encoded as 0 is not the last recommended medicine by the algorithm. The chances of that are very low with this particular model and dataset because the medicine only appears twice in the training dataset so it is not very likely to be recommended in the first place and it is way more unlikely to be last label in the output.
 
 ## Evaluation
-I evaluated the model using precision, recall and F-score, which seem like the most appropriate measures for this case. Precision score measures the percentage of correct prescribed medicines among the medicine labels selected by the algorithm. Recall score measures the percentage of correct medicine labels selected by the algorithm. F-measure is a combined precision and recall measure. The scores are shown below:
+I evaluated the model on a small test set of about 300 prescriptions that I separated before starting the training. I tested using precision, recall and F-score, which seem like the most appropriate measures for this case. Precision score measures the percentage of correct prescribed medicines among the medicine labels selected by the algorithm. Recall score measures the percentage of correct medicine labels selected by the algorithm. F-measure is a combined precision and recall measure. The scores are shown below:
 
 Evaluation Scores from using **Binary Relevance** to transform the multilabel classifier:
 
