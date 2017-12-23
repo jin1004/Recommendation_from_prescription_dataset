@@ -18,7 +18,7 @@ I have uploaded the image to docker hub. So in order to run it, just follow thes
 
 `docker run -ti naziba/medicine_recommendation`
 
- Alternatively, you can also build your image:
+ Alternatively, you can also build your own image:
  * First clone the git repository to a local directory
  * Download the model from https://www.dropbox.com/s/xe2994bu9g96b7d/model1.out?dl=0 and put it in the same directory
  * cd to the local directory
@@ -28,7 +28,7 @@ I have uploaded the image to docker hub. So in order to run it, just follow thes
 
  `docker run -ti medicine-recommendation`
 
-#Algorithm Description
+## Algorithm Description
 A dataset is provided for the task, which I am using to train a supervised machine learning classifier that uses the different medicines as different classes and predicts which class a particular data will belong to given all the other values in the prescription.
 
 ## Dataset Description
