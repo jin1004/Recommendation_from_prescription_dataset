@@ -11,8 +11,11 @@ The goal is to create a recommendation applicaiton that, given an unfinished pre
 
 I have uploaded the image to docker hub. So in order to run it, just follow these steps:
 * Pull the image from Docker Hub (image size is ~1.34GB)  It may take ~10-15 minutes:
+
 `docker pull naziba/medicine_recommendation`
+
 * Run the application and follow the instructions on screen:
+
 `docker run -ti naziba/medicine_recommendation`
 
  Alternatively, you can also build your image:
@@ -20,7 +23,9 @@ I have uploaded the image to docker hub. So in order to run it, just follow thes
  * Download the model from https://www.dropbox.com/s/xe2994bu9g96b7d/model1.out?dl=0 and put it in the same directory
  * cd to the local directory
  * Run the following commands:
+
  `docker build -t medicine-recommendation .`
+
  `docker run -ti medicine-recommendation`
 
 #Algorithm Description
